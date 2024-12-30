@@ -2,11 +2,11 @@
 
 A MATLAB script for calculating the fractal dimension of EEG images using box-counting method.
 
+---
+
 # Preprocessing EEG Data Using EEGLab
 
 This section describes how to use **EEGLab** to preprocess EEG signals from `.mat` files. 
-
----
 
 ## About EEGLab  
 EEGLab is an open-source MATLAB toolbox designed for processing and analyzing EEG data. It provides a graphical interface and scripting capabilities, supporting tasks like filtering, ICA, and visualization.  
@@ -15,8 +15,6 @@ EEGLab is an open-source MATLAB toolbox designed for processing and analyzing EE
 - Graphical interface for interactive data exploration.
 - Preprocessing capabilities such as filtering and artifact removal.
 - Support for multiple EEG data formats (e.g., `.set`, `.edf`, `.mat`).
-
----
 
 ## Installation
 
@@ -37,7 +35,6 @@ Then Launching EEGLab, the EEGLab GUI will open, showing the main menu.
 ```matlab
 eeglab;
 ```
----
 
 ## Converting EEG Data to Images
 
@@ -85,3 +82,27 @@ for i = 1:length(file_list)
 end
 ```
 
+---
+
+# Fractal Dimension Calculation
+
+Run the script to compute the FD for all EEG images in the dataset:
+```matlab
+Run( 'CalculatedFD.m')
+```
+
+Here's a flowchart of ```matlab CalculatedFD.m``` which provides for a better understanding:
+
+![本地图片](FD_Flowchart.png)
+
+Finally, a correct fractal dimension interval should between 1.7 to 1.9.
+
+# About Fractal dimension
+
+Fractal Dimension (FD) is a mathematical measure that extends the concept of dimensions to describe the complexity of irregular structures. Unlike traditional dimensions (e.g., 1D, 2D, 3D), FD is often a non-integer value, representing how much space an object fills across scales.
+
+In this project, FD is computed using the box-counting method, where the relationship between the number of boxes (N) needed to cover an object and the size of the boxes (r) is analyzed using the formula:
+
+FD = \frac{\log(N(r))}{\log(1/r)}
+
+Higher FD values indicate more complex patterns, while lower values suggest regularity. This property is used to analyze EEG signal complexity for normal and epileptic states.
