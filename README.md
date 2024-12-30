@@ -14,7 +14,7 @@ EEGLab is an open-source MATLAB toolbox designed for processing and analyzing EE
 ### Key Features of EEGLab:
 - Graphical interface for interactive data exploration.
 - Preprocessing capabilities such as filtering and artifact removal.
-- Support for multiple EEG data formats (e.g., `.set`, `.edf`, `.mat`).
+- Support for multiple EEG data formats (e.g., `.edf`, `.mat`).
 
 ## Installation
 
@@ -88,10 +88,32 @@ end
 
 Run the script to compute the FD for all EEG images in the dataset:
 ```matlab
-Run( 'CalculatedFD.m')
+% Set the image folder path
+folderPath = '/path/to/yourselves/S'; % Replace with the actual folder path
+
+% Get all image files in the folder
+imageFiles = dir(fullfile(folderPath, '*.png')); % Assuming the image files are in png format
+numFiles = length(imageFiles);
+
+% Initialize the fractal dimension array
+fractalDimensions = zeros(1, numFiles);
+
+% Iterate through each image file
+for i = 1:numFiles
+    % Get the full path of the image file
+    imagePath = fullfile(folderPath, imageFiles(i).name);
+    
+    % Calculate the fractal dimension
+    fractalDimensions(i) = CalculateFD(imagePath);
+end
+
+% Calculate the mean, maximum, and minimum values
+meanFD = mean(fractalDimensions);
+% Output the result
+fprintf('Average Fractal Dimension: %.4f\n', meanFD);
 ```
 
-Here's a flowchart of ```matlab CalculatedFD.m``` which provides for a better understanding:
+Here's a flowchart of ```CalculatedFD.m``` which provides for a better understanding:
 
 ![本地图片](FD_Flowchart.png)
 
