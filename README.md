@@ -35,9 +35,11 @@ EEGLab is an open-source MATLAB toolbox designed for processing and analyzing EE
 
 Then Launching EEGLab, the EEGLab GUI will open, showing the main menu.
 ```matlab
-   eeglab;
-
+eeglab;
+```
 ---
+
+## Converting EEG Data to Images
 
 Ensure your .mat file is in the appropriate format, containing an EEG signal matrix and associated metadata (e.g., sampling rate, channel names). Select your .mat file and configure the import settings. Example MATLAB code for programmatic loading:
 ```matlab
@@ -46,10 +48,40 @@ load('eeg_data.mat'); % Replace with your file
 EEG = pop_importdata('dataformat', 'array', 'data', EEG_data, ...
                      'srate', sampling_rate, 'chanlocs', 'channel_locations.ced');
 eeglab redraw;
-
-After checking your EEG plot in EEGLab GUI, you may use MATLAB scripting to save EEG data plots:
+```
+After checking your EEG plot in EEGLab GUI, use MATLAB scripting to save EEG data plots:
 ```matlab
 figure;
-pop_timtopo(EEG, [0 EEG.xmax*1000], [NaN]); % Topographic map
-saveas(gcf, 'eeg_topo.png');
+saveas(gcf, 'eeg_001.png');
 close(gcf);
+```
+A great ouput will be shown like following:
+
+![本地图片](Z001.png)
+
+## Automating Image Export for Multiple Files
+If you have multiple .mat files, use the following MATLAB script to automate the process:
+```matlab
+% Directory containing .mat files
+data_folder = 'path_to_eeg_files';
+output_folder = 'path_to_save_images';
+file_list = dir(fullfile(data_folder, '*.mat'));
+
+% Loop through each file
+for i = 1:length(file_list)
+    % Load .mat file
+    file_path = fullfile(data_folder, file_list(i).name);
+    load(file_path); % Assumes EEG_data and sampling_rate exist in .mat
+    
+    % Import data to EEGLab
+    EEG = pop_importdata('dataformat', 'array', 'data', EEG_data, ...
+                         'srate', sampling_rate, 'chanlocs', 'channel_locations.ced');
+    
+    % Generate and save plot
+    figure;
+    pop_timtopo(EEG, [0 EEG.xmax*1000], [NaN]);
+    saveas(gcf, fullfile(output_folder, [file_list(i).name, '.png']));
+    close(gcf);
+end
+```
+
